@@ -1,0 +1,72 @@
+{
+    "title": "Fashion Connector Importer",
+    "description": "Set of adapters which allow partners to send their stock and price updates into Zalando Platform.\n",
+    "docsUrl": "",
+    "url": "https://merchants-connector-importer.zalandoapis.com/",
+    "envVars": {},
+    "credentials": {
+        "fields": {
+            "server": {
+                "label": "Server",
+                "viewClass": "SelectView",
+                "model": [
+                    "https://merchants-connector-importer.zalandoapis.com/",
+                    "--- Custom URL"
+                ],
+                "required": true
+            },
+            "otherServer": {
+                "label": "Custom Server URL",
+                "viewClass": "TextFieldView"
+            },
+            "auth_api_key": {
+                "label": "x-api-key (api_key)",
+                "viewClass": "TextFieldView"
+            }
+        }
+    },
+    "triggers": {
+        "startFlow": {
+            "main": "./lib/triggers/startFlow.js",
+            "type": "polling",
+            "title": "Start Flow",
+            "fields": {}
+        }
+    },
+    "actions": {
+        "put__client_id___file_name_": {
+            "main": "./lib/actions/put__client_id___file_name_.js",
+            "title": "Process a stock/price update",
+            "description": "Receives a valid stock/price update file (CSV) and\nqueues it for processing.\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put__client_id___file_name_.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "put__client_id__validate": {
+            "main": "./lib/actions/put__client_id__validate.js",
+            "title": "Validate the stock/price update file (CSV)",
+            "description": "Receives a valid stock/price update file (CSV) and\nvalidates it.\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/put__client_id__validate.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

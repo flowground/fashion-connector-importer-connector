@@ -1,0 +1,15 @@
+{
+    "name": "fashion-connector-importer-connector",
+    "version": "0.1.0",
+    "description": "Set of adapters which allow partners to send their stock and price updates into Zalando Platform.\n",
+    "main": "component.json",
+    "dependencies": {
+        "elasticio-node": "0.0.9",
+        "elasticio-sailor-nodejs": "^2.2.1",
+        "swagger-client": "^3.8.22"
+    },
+    "author": {
+        "name": "Deutsche Telekom AG"
+    },
+    "license": "Apache-2.0"
+}

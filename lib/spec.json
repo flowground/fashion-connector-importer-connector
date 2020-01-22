@@ -1,0 +1,367 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Fashion Connector Importer",
+        "description": "Set of adapters which allow partners to send their stock and price updates into Zalando Platform.\n",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "https://merchants-connector-importer.zalandoapis.com/"
+        }
+    ],
+    "paths": {
+        "/{client_id}/{file_name}": {
+            "put": {
+                "summary": "Process a stock/price update",
+                "description": "Receives a valid stock/price update file (CSV) and\nqueues it for processing.\n",
+                "parameters": [
+                    {
+                        "name": "file_name",
+                        "in": "path",
+                        "description": "Stock/price update file name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "path",
+                        "description": "Partner client id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "text/csv": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "File received successfully (does not validate it)",
+                        "headers": {
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Timestamp": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Empty",
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/{client_id}/validate": {
+            "put": {
+                "summary": "Validate the stock/price update file (CSV)",
+                "description": "Receives a valid stock/price update file (CSV) and\nvalidates it.\n",
+                "parameters": [
+                    {
+                        "name": "client_id",
+                        "in": "path",
+                        "description": "Partner client id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File validated successfully",
+                        "headers": {
+                            "Content-Length": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Timestamp": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation",
+                                    "type": "object",
+                                    "properties": {
+                                        "errors": {
+                                            "type": "array",
+                                            "description": "List of errors in the CSV file",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "details": {
+                                                        "type": "array",
+                                                        "description": "List of validation details",
+                                                        "items": {
+                                                            "title": "Detail",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "description": "Message of the validation detail"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "description": "Type of the validation detail"
+                                                    },
+                                                    "line_numbers": {
+                                                        "type": "array",
+                                                        "description": "Array of lines with validation details in the file",
+                                                        "items": {
+                                                            "title": "Line Number",
+                                                            "type": "integer",
+                                                            "description": "Number of the line in the CSV file",
+                                                            "example": 123
+                                                        }
+                                                    }
+                                                },
+                                                "description": "Validation Details of the CSV file"
+                                            }
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "description": "Result from the file's validation",
+                                            "example": "FAILED! Fashion Connector will not be able to process the file. Please correct the errors."
+                                        },
+                                        "warnings": {
+                                            "type": "array",
+                                            "description": "List of warnings of the CSV file",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "details": {
+                                                        "type": "array",
+                                                        "description": "List of validation details",
+                                                        "items": {
+                                                            "title": "Detail",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "description": "Message of the validation detail"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "description": "Type of the validation detail"
+                                                    },
+                                                    "line_numbers": {
+                                                        "type": "array",
+                                                        "description": "Array of lines with validation details in the file",
+                                                        "items": {
+                                                            "title": "Line Number",
+                                                            "type": "integer",
+                                                            "description": "Number of the line in the CSV file",
+                                                            "example": 123
+                                                        }
+                                                    }
+                                                },
+                                                "description": "Validation Details of the CSV file"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "text/csv": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Empty": {
+                "title": "Empty",
+                "type": "object"
+            },
+            "Validation": {
+                "title": "Validation",
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "description": "List of errors in the CSV file",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "details": {
+                                    "type": "array",
+                                    "description": "List of validation details",
+                                    "items": {
+                                        "title": "Detail",
+                                        "type": "string"
+                                    }
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Message of the validation detail"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Type of the validation detail"
+                                },
+                                "line_numbers": {
+                                    "type": "array",
+                                    "description": "Array of lines with validation details in the file",
+                                    "items": {
+                                        "title": "Line Number",
+                                        "type": "integer",
+                                        "description": "Number of the line in the CSV file",
+                                        "example": 123
+                                    }
+                                }
+                            },
+                            "description": "Validation Details of the CSV file"
+                        }
+                    },
+                    "result": {
+                        "type": "string",
+                        "description": "Result from the file's validation",
+                        "example": "FAILED! Fashion Connector will not be able to process the file. Please correct the errors."
+                    },
+                    "warnings": {
+                        "type": "array",
+                        "description": "List of warnings of the CSV file",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "details": {
+                                    "type": "array",
+                                    "description": "List of validation details",
+                                    "items": {
+                                        "title": "Detail",
+                                        "type": "string"
+                                    }
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Message of the validation detail"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Type of the validation detail"
+                                },
+                                "line_numbers": {
+                                    "type": "array",
+                                    "description": "Array of lines with validation details in the file",
+                                    "items": {
+                                        "title": "Line Number",
+                                        "type": "integer",
+                                        "description": "Number of the line in the CSV file",
+                                        "example": 123
+                                    }
+                                }
+                            },
+                            "description": "Validation Details of the CSV file"
+                        }
+                    }
+                }
+            },
+            "ValidationDetails": {
+                "type": "object",
+                "properties": {
+                    "details": {
+                        "type": "array",
+                        "description": "List of validation details",
+                        "items": {
+                            "title": "Detail",
+                            "type": "string"
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Message of the validation detail"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of the validation detail"
+                    },
+                    "line_numbers": {
+                        "type": "array",
+                        "description": "Array of lines with validation details in the file",
+                        "items": {
+                            "title": "Line Number",
+                            "type": "integer",
+                            "description": "Number of the line in the CSV file",
+                            "example": 123
+                        }
+                    }
+                },
+                "description": "Validation Details of the CSV file"
+            },
+            "Detail": {
+                "title": "Detail",
+                "type": "string"
+            },
+            "LineNumber": {
+                "title": "Line Number",
+                "type": "integer",
+                "description": "Number of the line in the CSV file",
+                "example": 123
+            }
+        },
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "x-api-key",
+                "in": "header"
+            }
+        }
+    }
+}
