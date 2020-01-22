@@ -5,7 +5,7 @@
 A generated **flow**ground connector for the Fashion Connector Importer API (version 0.1.0).
 
 Generated from: https://merchants-connector-importer.zalandoapis.com/<br/>
-Generated at: 2020-01-22T10:52:51+00:00
+Generated at: 2020-01-22T11:26:18+00:00
 
 ## API Description
 
